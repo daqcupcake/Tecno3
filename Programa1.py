@@ -39,6 +39,7 @@ def Grafica (a,b,c):
     plt.grid(True)
     
     plt.show()
+    
 def MonotoCuad(a,b,c): #a,b,c coeficientes de la ecuacion cuadratica
 
     
