@@ -13,59 +13,115 @@ marco=tk.Frame(root,bg="#ffcfdc",bd=0,height=280,width=250)
 
 pantalla=tk.Entry(marco,width="19",font=("Arial",20))
 
+#variables globales
+num1=None
+num2=None
+operacion=None
+reset=False
+#funciones botones
 
+    
 
-btn00=tk.Button(marco,text="0",width="5",height="2",bg="#ffccda")
-btn01=tk.Button(marco,text="1",width="5",height="2",bg="#ffccda")
-btn02=tk.Button(marco,text="2",width="5",height="2",bg="#ffccda")
-btn03=tk.Button(marco,text="3",width="5",height="2",bg="#ffccda")
-btn04=tk.Button(marco,text="4",width="5",height="2",bg="#ffccda")
-btn05=tk.Button(marco,text="5",width="5",height="2",bg="#ffccda")
-btn06=tk.Button(marco,text="6",width="5",height="2",bg="#ffccda")
-btn07=tk.Button(marco,text="7",width="5",height="2",bg="#ffccda")
-btn08=tk.Button(marco,text="8",width="5",height="2",bg="#ffccda")
-btn09=tk.Button(marco,text="9",width="5",height="2",bg="#ffccda") 
+def clickNum (num): #recibe un numero 
 
-btnDiv=tk.Button(marco,text="÷",width="5",height="2",bg="#ff80a2")
-btnMul=tk.Button(marco,text="×",width="5",height="2",bg="#ff80a2")
-btnRes=tk.Button(marco,text="-",width="5",height="2",bg="#ff80a2")
-btnSum=tk.Button(marco,text="+",width="5",height="2",bg="#ff80a2")
-btnDot=tk.Button(marco,text=".",width="5",height="2",bg="#ff80a2")
-btnEq=tk.Button(marco,text="=",width="5",height="2",bg="#ff80a2")
+    
+    
+    global reset
+    
+    if reset:
+            pantalla.delete(0,tk.END) #o "end" en lugar de END
+            reset=False
+    pantalla.insert(tk.END, str(num))
+
+def clickOp (op):
+    global num1,num2,operacion
+    
+    if pantalla.get():
+        if num1 is None:
+                num1=float(pantalla.get())
+        
+        else:
+            num2=float(pantalla.get())
+            num1=hacerCalculo()
+            num2=None
+        
+    
+        
+    operacion=op
+    pantalla.delete(0,tk.END)
+
+def hacerCalculo():
+    global num1,num2, reset
+    if operacion=="+":
+        resultado=num1+num2
+        
+    elif operacion=="-":
+        resultado=num1-num2
+    
+    elif operacion=="x":
+        resultado=num1*num2
+        
+    elif operacion=="/":
+        if num2!=0:
+            resultado=num1/num2
+        else:
+            resultado="error"
+    else:
+        pass           
+
+    return resultado
+
+def clickIgual():
+    global num2, reset
+    num2=float(pantalla.get())
+    pantalla.delete(0,tk.END)
+    resultado=None
+   
+    
+    if operacion=="+":
+        resultado=num1+num2
+        
+    elif operacion=="-":
+        resultado=num1-num2
+    
+    elif operacion=="x":
+        resultado=num1*num2
+        
+    elif operacion=="/":
+        if num2!=0:
+            resultado=num1/num2
+        else:
+            resultado="error"
+    else:
+        pass
+    
+    pantalla.insert(0,str(resultado))
+    reset=True
+    
+btn00=tk.Button(marco,text="0",width="5",height="2",bg="#ffccda",command=lambda:clickNum(0))
+btn01=tk.Button(marco,text="1",width="5",height="2",bg="#ffccda",command=lambda:clickNum(1))
+btn02=tk.Button(marco,text="2",width="5",height="2",bg="#ffccda",command=lambda:clickNum(2))
+btn03=tk.Button(marco,text="3",width="5",height="2",bg="#ffccda",command=lambda:clickNum(3))
+btn04=tk.Button(marco,text="4",width="5",height="2",bg="#ffccda",command=lambda:clickNum(4))
+btn05=tk.Button(marco,text="5",width="5",height="2",bg="#ffccda",command=lambda:clickNum(5))
+btn06=tk.Button(marco,text="6",width="5",height="2",bg="#ffccda",command=lambda:clickNum(6))
+btn07=tk.Button(marco,text="7",width="5",height="2",bg="#ffccda",command=lambda:clickNum(7))
+btn08=tk.Button(marco,text="8",width="5",height="2",bg="#ffccda",command=lambda:clickNum(8))
+btn09=tk.Button(marco,text="9",width="5",height="2",bg="#ffccda",command=lambda:clickNum(9)) 
+
+btnDiv=tk.Button(marco,text="÷",width="5",height="2",bg="#ff80a2",command=lambda:clickOp("/"))
+btnMul=tk.Button(marco,text="×",width="5",height="2",bg="#ff80a2",command=lambda:clickOp("x"))
+btnRes=tk.Button(marco,text="-",width="5",height="2",bg="#ff80a2",command=lambda:clickOp("-"))
+btnSum=tk.Button(marco,text="+",width="5",height="2",bg="#ff80a2",command=lambda:clickOp("+"))
+btnDot=tk.Button(marco,text=".",width="5",height="2",bg="#ff80a2",command=lambda:clickNum("."))
+btnEq=tk.Button(marco,text="=",width="5",height="2",bg="#ff80a2",command=clickIgual)
 
 
 #Colocar
+
 labelFondo.place(x=0,y=0)
 marco.place(x=25,y=85)
 
-"""pantalla.grid(row=0,column=0,columnspan=4)
-
-btn07.grid(row=1,column=0)
-btn08.grid(row=1,column=1)
-btn09.grid(row=1,column=2)
-
-btnDiv.grid(row=1,column=3)
-
-
-btn04.grid(row=2,column=0)
-btn05.grid(row=2,column=1)
-btn06.grid(row=2,column=2)
-
-btnMul.grid(row=2,column=3)
-
-
-btn01.grid(row=3,column=0)
-btn02.grid(row=3,column=1)
-btn03.grid(row=3,column=2)
-
-btnRes.grid(row=3,column=3)
-
-
-btn00.grid(row=4,column=0)
-
-btnDot.grid(row=4,column=1)
-btnEq.grid(row=4,column=2)
-btnSum.grid(row=4,column=3) """
 
 pantalla.place(x=0,y=10)
 

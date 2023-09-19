@@ -45,25 +45,46 @@ class raicesEcuaciones:
             print("No se puede aplicar el método")
         return error, aprox
     
-    def grafErrorIter (self,vectError): #grafica en el eje x el numero de iter y en el y el error
+    def grafErrorIter (self,vectError,metodo): #grafica en el eje x el numero de iter y en el y el error
         
-        plt.plot(range(len(vectError)),vectError, marker='o')
+        """plt.plot(range(len(vectError)),vectError, marker='o')
         plt.xlabel("Iteración")
         plt.ylabel("Error")
         
-        plt.title(f"Iteración vs. Error con el método bisección de la función {self.f}")
+        plt.title(f"Iteración vs. Error con el método {metodo} de la función {self.f}")
         plt.grid(True)
-        plt.show()
-   
-    def grafAproxIter (self,vectAprox): #grafica en el eje x el numero de iter y en el y la aproximacion
+        plt.show()"""
+        fig, ax=plt.subplots()
         
-        plt.plot(range(len(vectAprox)),vectAprox, marker='o')
+        ax.plot(range(len(vectError)),vectError, marker='o')
+        ax.xlabel("Iteración")
+        ax.ylabel("Error")
+        
+        ax.title(f"Iteración vs. Error con el método {metodo} de la función {self.f}")
+        ax.grid(True)
+        
+        return fig
+   
+    def grafAproxIter (self,vectAprox,metodo): #grafica en el eje x el numero de iter y en el y la aproximacion
+        
+        """plt.plot(range(len(vectAprox)),vectAprox, marker='o')
         plt.xlabel("Iteración")
         plt.ylabel("Aproximación")
         
-        plt.title(f"Iteración vs. Aproximación con el método bisección de la función {self.f}")
+        plt.title(f"Iteración vs. Aproximación con el método {metodo} de la función {self.f}")
         plt.grid(True)
-        plt.show()
+        plt.show()"""
+        
+        fig, ax=plt.subplots()
+        
+        ax.plot(range(len(vectAprox)),vectAprox, marker='o')
+        ax.xlabel("Iteración")
+        ax.ylabel("Aproximación")
+        
+        ax.title(f"Iteración vs. Aproximación con el método {metodo} de la función {self.f}")
+        ax.grid(True)
+        
+        return fig
    
     def falsaPosicion(self,x0,x1):
         
@@ -75,8 +96,7 @@ class raicesEcuaciones:
         fx1 = self.f.subs(x,x1).evalf() #evalua la funcion en x1 sustituyendo la variable
         
         if (fx0*fx1<0):
-            while cont<self.iterMax: 
-                
+            while cont<self.iterMax:   
                 x2=x1-(fx1*(x1-x0))/(fx1-fx0)
                 fx2=self.f.subs(x,x2).evalf()
                 aprox.append(x2)
@@ -105,9 +125,6 @@ class raicesEcuaciones:
                 if error[cont]<self.tol:
                     break
                 cont+=1
-                
-            
-            
         else:
             print("No se puede aplicar el método")
     
@@ -145,6 +162,41 @@ class raicesEcuaciones:
             cont+=1
             
         return error,aprox
+    
+    def halley (self,x0):
+        
+        x=sp.symbols('x') #indica que x es una variable simbólica
+        
+        cont=0
+        error=[]
+        aprox=[]
+        df=sp.diff(self.f)
+        d2f=sp.diff(df)
+        
+        
+        while (cont<self.iterMax):
+            
+            fx0 = self.f.subs(x,x0).evalf() #evalua la funcion en x0
+            dfx0=df.subs(x,x0).evalf()
+            d2fx0=d2f.subs(x,x0).evalf()
+             
+            x0=x0-(2*fx0*dfx0)/((2*dfx0**2)-(fx0*d2fx0))
+            
+            aprox.append(x0)
+            
+            if cont>=1:
+                error.append(abs(aprox[cont]-aprox[cont-1]))
+            else:
+                error.append(1)
+                
+            if error[cont]<self.tol:
+                break
+                
+            cont+=1
+            
+        return error,aprox
+            
+            
             
             
         

@@ -4,18 +4,19 @@ import pandas as pd
 
 
 x=sp.symbols('x')
-f=x**2-sp.cos(x)-1
-tol=0.000001
-iterMax=50
+f=x**2-5
+tol=10**(-100)
+iterMax=1000
+
 
 pancho=rE(f,tol,iterMax)
-[errBis,aproxBis]=pancho.secante(1, 2)
+[errBis,aproxBis]=pancho.halley(1.5)
 
 #crear un DataFrame
 data={"Aproximación":aproxBis, "Error":errBis}
 df=pd.DataFrame(data)
-pancho.grafErrorIter(errBis)
-pancho.grafAproxIter(aproxBis)
+pancho.grafErrorIter(errBis,"Halley")
+pancho.grafAproxIter(aproxBis, "Halley")
 
 #Mostrar el DataFrame
 print(df)
